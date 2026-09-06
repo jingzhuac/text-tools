@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="文本行批量处理工具：去重、排序(A-Z/Z-A)、自动编号、删除空行、反转、去空格、加前后缀、查找替换。纯前端本地处理，数据不上传任何服务器，粘贴即用。">
+<meta name="keywords" content="文本行去重,文本排序,行去重,文本批量处理,加行号,去空行,文本加前后缀,查找替换,本地隐私文本工具,在线文本工具">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://jingzhuac.github.io/text-tools/">
+<meta property="og:title" content="文本行批量处理 · 本地隐私 · 免费在线工具">
+<meta property="og:description" content="本机浏览器里批量整理文本行：去重/排序/编号/删空行/反转/去空格/加前后缀/查找替换——数据绝不上传。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://jingzhuac.github.io/text-tools/">
+<title>文本行批量处理 · 去重/排序/编号 · 本地隐私工具</title>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "文本行批量处理工具",
+  "description": "浏览器本地批量处理文本行的免费小工具：文本行去重、A-Z/Z-A 排序、自动编号、删除空行、反转顺序、去首尾空格、每行加前后缀、整行查找替换。纯前端、无后端、无上传。",
+  "url": "https://jingzhuac.github.io/text-tools/",
+  "applicationCategory": "UtilityApplication",
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "CNY" },
+  "browserRequirements": "Requires JavaScript",
+  "creator": { "@type": "Organization", "name": "金爪工具箱 Jinzhao" },
+  "inLanguage": "zh-CN"
+}
+</script>
+<style>
+  :root{--bg:#f4f6f9;--card:#fff;--bd:#e3e8ef;--tx:#1f2933;--mut:#6b7683;--acc:#2563eb;--acc-d:#1e40af;--ok:#16a34a;--warn:#d97706;--red:#dc2626}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,"Segoe UI","Microsoft YaHei",Roboto,sans-serif;background:var(--bg);color:var(--tx);line-height:1.6}
+  header{padding:16px 22px;background:var(--card);border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  header h1{font-size:18px;margin:0;font-weight:700}
+  .tag{font-size:12px;color:#fff;background:var(--ok);border-radius:20px;padding:2px 10px;font-weight:600}
+  .priv{font-size:12px;color:var(--mut);margin-left:auto}
+  main{max-width:1000px;margin:20px auto;padding:0 16px}
+  .card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:18px;margin-bottom:16px}
+  h2{font-size:15px;margin:0 0 8px}
+  h2 small{font-weight:400}
+  .muted{color:var(--mut);font-size:13px}
+  textarea{font-family:ui-monospace,Consolas,"Courier New",monospace;font-size:13.5px;width:100%;min-height:190px;border:1px solid var(--bd);border-radius:8px;padding:10px;resize:vertical;background:#fbfcfe;white-space:pre}
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:780px){.cols{grid-template-columns:1fr}}
+  .tbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:8px 0 12px}
+  button{font:inherit;border:none;border-radius:8px;padding:8px 13px;cursor:pointer}
+  .btn-p{background:var(--acc);color:#fff}
+  .btn-p:hover{background:var(--acc-d)}
+  .btn-o{background:#eef3ff;color:var(--acc-d)}
+  .btn-r{background:#fee2e2;color:#b91c1c}
+  button:disabled{opacity:.45;cursor:not-allowed}
+  input[type=text]{font:inherit;padding:6px 8px;border:1px solid var(--bd);border-radius:8px}
+  .wrap{overflow:auto;max-height:300px;border:1px solid var(--bd);border-radius:8px;background:#fbfcfe}
+  .pline{display:flex;border-bottom:1px solid var(--bd);font-family:ui-monospace,Consolas,monospace;font-size:12.5px}
+  .pline:last-child{border-bottom:none}
+  .pline .no{flex:0 0 46px;text-align:right;padding:3px 8px;color:var(--mut);background:#f0f4fa;border-right:1px solid var(--bd);user-select:none}
+  .pline .tx{padding:3px 10px;white-space:pre-wrap;word-break:break-all;flex:1}
+  .emptybox{padding:16px;text-align:center;color:var(--mut);font-size:13.5px}
+  .st{font-size:12.5px;margin-top:8px}
+  .ok{color:var(--ok)} .mut{color:var(--mut)} .warn{color:var(--warn)}
+  .hint{border-left:3px solid var(--acc);background:#f4f8ff;padding:8px 12px;border-radius:0 8px 8px 0;font-size:13px;color:#1e3a8a;margin-bottom:6px}
+  code{background:#eef1f5;padding:1px 6px;border-radius:5px;font-size:12px}
+  footer{text-align:center;color:var(--mut);font-size:12px;padding:8px 0 30px}
+  .hidden{display:none}
+  .field{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--mut)}
+  .divider{height:1px;background:var(--bd);margin:10px 0 12px}
+</style>
+</head>
+<body>
+<header>
+  <h1>📝 文本行批量处理</h1>
+  <span class="tag">本地处理</span>
+  <span class="priv">🔒 全程在本机浏览器运行 · 数据不上传任何服务器</span>
+</header>
+<main>
+  <div class="card">
+    <h2>输入文本行</h2>
+    <textarea id="in" spellcheck="false" placeholder='把要处理的文本粘贴到这里，每行一条。例如：&#10;  杭州  &#10;上海&#10;杭州&#10;北京&#10;上海&#10;🍕&#10;&#10;想先看看？点下方「插入示例」。换行即视为一行；可全部处理完再导出。'></textarea>
+    <div class="tbar">
+      <button type="button" class="btn-p" id="btnApply">⚡ 应用下方选中的动作</button>
+      <button type="button" class="btn-o" id="btnSample">插入示例</button>
+      <button type="button" class="btn-o" id="btnLoad">载入 .txt 文件</button>
+      <button type="button" class="btn-r" id="btnReset">↺ 恢复原始</button>
+      <input type="file" id="file" accept=".txt,text/plain" class="hidden">
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>动作组合 <small class="muted">（按从上到下顺序套用，结果在右侧逐行预览）</small></h2>
+    <div class="toolbox" id="toolbox"></div>
+  </div>
+
+  <div class="card">
+    <h2>结果 <span class="muted" id="shape"></span></h2>
+    <div class="wrap" id="view"></div>
+    <div class="st" id="status"></div>
+    <div class="tbar">
+      <button type="button" class="btn-p" id="btnCopy">📋 复制结果</button>
+      <button type="button" class="btn-o" id="btnSwap">下载 .txt</button>
+      <span class="muted">导出为 UTF-8 文本；也可直接全选复制。</span>
+    </div>
+    <div class="divider"></div>
+    <div class="hint">⬇ 快捷单键动作：一键执行单个常用整理（去重 → 排序 → …依次点，可连续套用）。</div>
+    <div class="tbar">
+      <button type="button" class="btn-o" id="qTrim">一键去首尾空格</button>
+      <button type="button" class="btn-o" id="qDedup">一键去重</button>
+      <button type="button" class="btn-o" id="qSort">一键排序 A→Z</button>
+    </div>
+  </div>
+  <footer>文本行批量处理 v1.0 · 纯前端 · 无上传无跟踪 · 金爪 🐾 · <a href="../" style="color:#2563eb">更多工具 → 金爪工具箱</a></footer>
+</main>
+<script>
+(()=>{
+  const $=id=>document.getElementById(id);
+  let lines=[];// 当前工作行（全部套用动作后的状态）
+  let original=[];// 原始文本拆行（供“恢复原始”）
+
+  // ---------- 工具集：对行数组做一次性转换 ----------
+  const OPS = [
+    {key:'trim',en:'去首尾空格',des:'每行去掉两端空白',run:a=>a.map(s=>s.trim())},
+    {key:'dropEmpty',en:'删除空行',des:'去掉空行（含全空白行）',run:a=>a.filter(l=>l.trim()!=='')},
+    {key:'dedup',en:'整行去重',des:'保留首次出现；空白已忽略时可稳定去重',run:a=>{const s=new Set();return a.filter(l=>{if(s.has(l))return false;s.add(l);return true;});}},
+    {key:'sortAZ',en:'排序 A→Z',des:'升序（忽略大小写）',run:a=>a.slice().sort((x,y)=>x.toLocaleLowerCase().localeCompare(y.toLocaleLowerCase()))},
+    {key:'sortZA',en:'排序 Z→A',des:'降序（忽略大小写）',run:a=>a.slice().sort((x,y)=>y.toLocaleLowerCase().localeCompare(x.toLocaleLowerCase()))},
+    {key:'reverse',en:'反转顺序',des:'最后一行变第一行',run:a=>a.slice().reverse()},
+    {key:'enum',en:'自动编号',des:'每行前加 1. 2. 3.…（可加分隔与起始）',has:true,run:(a,v)=>{const sep=(v&&v.sep!==undefined?v.sep:'. ');const start=v&&(v.start!==undefined)?+v.start:1;return a.map((l,i)=>(start+i)+sep+l);}},
+    {key:'affix',en:'每行加前后缀',des:'给每行首尾加固定文字',has:true,run:(a,v)=>{const pre=v&&v.pre?String(v.pre):'';const suf=v&&v.suf?String(v.suf):'';return a.map(l=>pre+l+suf);}},
+    {key:'replace',en:'查找替换',des:'在每行内查找并整体替换（也用于整行/多行文本改写）',has:true,run:(a,v)=>{const from=v&&v.from?String(v.from):'';if(!from){return a;}const to=(v&&v.to!==undefined)?String(v.to):'';return a.map(l=>l.split(from).join(to));}}
+  ];
+
+  // 动态渲染动作控件
+  const toolbox=$('toolbox');
+  function buildTools(){
+    toolbox.innerHTML='';
+    OPS.forEach((op)=>{
+      const box=document.createElement('div');
+      box.style.cssText='border:1px solid var(--bd);border-radius:10px;padding:10px 12px;margin-bottom:10px;background:#fbfcfe;display:flex;flex-wrap:wrap;align-items:center;gap:8px';
+      box.innerHTML=`<label style="display:flex;align-items:center;gap:7px;font-size:13.5px;cursor:pointer;min-width:230px"><input type="checkbox" class="opck" data-key="${op.key}" style="width:15px;height:15px"> <b>${op.en}</b><span class="muted">— ${op.des}</span></label>`;
+      const optWrap=document.createElement('div');
+      optWrap.style.cssText='display:flex;gap:8px;align-items:center;flex:1;flex-wrap:wrap';
+      if(op.key==='enum'){
+        optWrap.innerHTML=`<span class="field">分隔 <input type="text" class="opv" data-a="sep" value=". " size="4"></span><span class="field">起始 <input type="text" class="opv" data-a="start" value="1" size="3"></span>`;
+      }else if(op.key==='affix'){
+        optWrap.innerHTML=`<span class="field">前缀 <input type="text" class="opv" data-a="pre" value="" placeholder="(可空)" size="10"></span><span class="field">后缀 <input type="text" class="opv" data-a="suf" value="" placeholder="(可空)" size="10"></span>`;
+      }else if(op.key==='replace'){
+        optWrap.innerHTML=`<span class="field">查找 <input type="text" class="opv" data-a="from" value="" placeholder="要查找的文字" size="14"></span><span class="field">替换为 <input type="text" class="opv" data-a="to" value="" placeholder="(可空则删除)" size="14"></span>`;
+      }
+      // 收集参数：有输入子动作的行才展开参数输入
+      box.appendChild(optWrap);
+      toolbox.appendChild(box);
+    });
+  }
+  buildTools();
+
+  // 读取勾选与参数
+  function collectOps(){
+    const sel=[];
+    toolbox.querySelectorAll('.opck').forEach(cb=>{
+      if(!cb.checked)return;
+      const key=cb.dataset.key;
+      const vars={};
+      // 参数按 data-a 归属：取当前动作卡片内的参数输入框
+      const card=cb.closest('div[style]');
+      card.querySelectorAll('.opv').forEach(inp=>{ vars[inp.dataset.a]=inp.value; });
+      sel.push({key, vars});
+    });
+    return sel;
+  }
+
+  function apply(){
+    const ops=collectOps();
+    if(!ops.length){ setStatus('未勾选任何动作，先勾几个再点「⚡ 应用」','warn'); return; }
+    let cur=lines.slice();
+    const named=[];
+    for(const o of ops){
+      const def=OPS.find(x=>x.key===o.key);
+      if(o.key==='replace'){
+        const from=(o.vars.from||'').trim();
+        if(!from){ alert('查找替换需要先填「查找」内容。'); return; }
+      }
+      cur=def.run(cur,o.vars);
+      named.push(def.en);
+    }
+    lines=cur;
+    refresh();
+    setStatus('✔ 已应用：'+named.join(' → '),'ok');
+  }
+
+  function render(){
+    const view=$('view');
+    if(!lines.length){ view.innerHTML='<div class="emptybox">（还没有内容 — 先在左侧输入或点「插入示例」）</div>'; return; }
+    let h='';
+    const max=1200;
+    lines.slice(0,max).forEach((l,i)=>{ h+=`<div class="pline"><span class="no">${i+1}</span><span class="tx">${esc(l)}</span></div>`; });
+    if(lines.length>max){ h+=`<div class="pline"><span class="no">…</span><span class="tx muted">仅预览前 ${max} 行</span></div>`; }
+    view.innerHTML=h;
+    $('shape').textContent= lines.length+' 行';
+  }
+  function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  function setStatus(m,c){ $('status').innerHTML='<span class="'+(c||'mut')+'">'+m+'</span>'; }
+
+  function readInput(){ return $('in').value.replace(/\r\n/g,'\n').replace(/\r/g,'\n').split('\n'); }
+  function loadInto(txt,autoReset){
+    original=txt.replace(/^\uFEFF/,'').split(/\r\n|\r|\n/);
+    lines=original.slice();
+    // 同步到左侧输入框
+    if(autoReset){ $('in').value=original.join('\n'); }
+    refresh();
+    setStatus('已载入原始 '+original.length+' 行。','mut');
+  }
+
+  function refresh(){
+    render();
+  }
+
+  // 左侧输入变化监听(含"载入示例"后同步) —— 「应用动作」以左侧文本为准更新工作行
+  // 为直观：动作作用对象 = 左侧输入框当前内容（所见即所得）
+  $('btnApply').onclick=()=>{
+    lines=readInput(); original=lines.slice(); // 每次按当前输入当作本轮起点
+    apply();
+  };
+
+  // 单键常用：总是以 左侧输入框 当前内容为起点执行一次，结果进入右侧并可直接复制
+  function runQuick(fn,msg){
+    original=readInput();
+    let cur=original.slice();
+    const next = fn.length>1 ? fn(cur) : cur.map(fn);
+    lines=next; refresh();
+    setStatus('✔ '+msg+' → 现 '+lines.length+' 行。','ok');
+  }
+  $('qTrim').onclick=()=>runQuick(a=>a.map(s=>s.trim()),'去首尾空格');
+  $('qDedup').onclick=()=>runQuick(a=>{const s=new Set();return a.filter(l=>{if(s.has(l))return false;s.add(l);return true;});},'整行去重');
+  $('qSort').onclick=()=>runQuick(a=>a.slice().sort((x,y)=>x.toLocaleLowerCase().localeCompare(y.toLocaleLowerCase())),'排序 A→Z');
+
+  $('btnSample').onclick=()=>{
+    $('in').value='  杭州  \n上海\n杭州\n北京\n上海\n\n 深圳  \npizza\n上海\n台北\n\n换行=一行\n末尾多余空格 ';
+    lines=readInput(); original=lines.slice();
+    refresh();
+    setStatus('已插入示例(含尾空格/重复行/空行/中英文混排)。勾选动作点「⚡ 应用」体验。','mut');
+  };
+  $('btnReset').onclick=()=>{
+    if(!original.length){ setStatus('还没有内容。','mut'); return; }
+    $('in').value=original.join('\n');
+    lines=original.slice(); refresh();
+    setStatus('↺ 已恢复原始 '+original.length+' 行。','mut');
+  };
+  $('file').onchange=()=>{ const f=$('file').files[0]; if(!f)return;
+    const rd=new FileReader();
+    rd.onload=()=>{ loadInto(String(rd.result),true); setStatus('已载入 '+f.name,'mut'); };
+    rd.readAsText(f,'utf-8');
+  };
+  $('btnLoad').onclick=()=>$('file').click();
+
+  $('btnCopy').onclick=async()=>{
+    if(!lines.length){ setStatus('结果为空，没什么可复制。','warn'); return; }
+    const text=lines.join('\n');
+    try{ await navigator.clipboard.writeText(text); setStatus('✅ 已复制 '+lines.length+' 行到剪贴板。','ok'); }
+    catch(e){
+      const ta=document.createElement('textarea'); ta.value=text; ta.style.position='fixed'; ta.style.opacity='0'; document.body.appendChild(ta); ta.select();
+      try{ document.execCommand('copy'); setStatus('✅ 已复制。','ok'); }catch(e2){ setStatus('复制失败：请手动框选结果。','warn'); }
+      document.body.removeChild(ta);
+    }
+  };
+  $('btnSwap').onclick=()=>{
+    if(!lines.length){ setStatus('还没有结果可下载。','warn'); return; }
+    const blob=new Blob([lines.join('\n')],{type:'text/plain;charset=utf-8'});
+    const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='processed.txt'; a.click();
+    URL.revokeObjectURL(a.href);
+    setStatus('⬇ 已开始下载 processed.txt。','ok');
+  };
+
+  // 初始状态渲染(空)
+  render(); setStatus('就绪：粘贴文本 → 勾选动作 → 「⚡ 应用」。左侧每改一次，应用与快捷键都以左侧输入为准。','mut');
+})();
+</script>
+</body>
+</html>
