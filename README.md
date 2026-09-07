@@ -42,7 +42,12 @@ python3 -m http.server 8139   # 或 npx serve .
 - 自检：`node` 提取内嵌脚本做语法校验通过；功能已覆盖任务要求的全部 8 类操作。
 
 ## 在线地址
-*(待部署，GitHub Pages 地址基准)* → https://jingzhuac.github.io/text-tools/
+免安装，浏览器直接打开：**https://jingzhuac.github.io/text-tools/**
+
+## ☕ 支持一下
+这些工具**免费、无广告、数据不上传**。如果它真帮到了你，欢迎到[在线页面](https://jingzhuac.github.io/text-tools/)页脚扫 **微信赞赏码** 或 **支付宝收款码** → 请作者喝杯咖啡，金额随意 🙏
+
+每一份支持，都会用来把它打磨得更好。
 
 ## 规划
 - [ ] 数字感知排序（数值行按大小排而非字典序）
