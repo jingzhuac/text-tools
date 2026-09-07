@@ -274,5 +274,42 @@
   render(); setStatus('就绪：粘贴文本 → 勾选动作 → 「⚡ 应用」。左侧每改一次，应用与快捷键都以左侧输入为准。','mut');
 })();
 </script>
+<style>
+.gzsupport{background:#ffffff;border-top:1px solid #e3e8ef;padding:20px 16px 26px;font-family:-apple-system,"Segoe UI","Microsoft YaHei",Roboto,sans-serif}
+.gzs-wrap{max-width:640px;margin:0 auto;text-align:center}
+.gzs-ask strong{display:block;font-size:15px;color:#1f2933;margin-bottom:6px}
+.gzs-ask span{display:block;font-size:12.5px;color:#6b7683;line-height:1.7;margin-bottom:14px}
+.gzs-codes{display:flex;justify-content:center;gap:24px;flex-wrap:wrap}
+.gzs-qr{margin:0;width:132px;cursor:zoom-in}
+.gzs-qr img{display:block;width:132px;height:132px;border:1px solid #e3e8ef;border-radius:10px;padding:6px;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.06);transition:transform .12s}
+.gzs-qr:hover img{transform:scale(1.04)}
+.gzs-qr figcaption{font-size:12px;color:#4b5563;margin-top:6px}
+.gzs-zoom{display:none;position:fixed;inset:0;background:rgba(15,23,42,.72);align-items:center;justify-content:center;z-index:999;cursor:zoom-out}
+.gzs-zoom img{max-width:min(340px,88vw);border-radius:12px;background:#fff;padding:14px}
+.gzs-zoom.on{display:flex}
+</style>
+<div class="gzsupport">
+  <div class="gzs-wrap">
+    <div class="gzs-ask">
+      <strong>觉得好用？请我喝杯咖啡 ☕</strong>
+      <span>纯前端 · 免费 · 无广告 · 数据不上传。你的每一份支持，都是我们持续打磨这些免费工具的动力。金额随意，谢谢老板 🙏</span>
+    </div>
+    <div class="gzs-codes">
+      <figure class="gzs-qr"><img src="assets/wechat-qr.jpg" alt="微信赞赏码" loading="lazy"><figcaption>微信赞赏</figcaption></figure>
+      <figure class="gzs-qr"><img src="assets/alipay-qr.jpg" alt="支付宝收款码" loading="lazy"><figcaption>支付宝收款</figcaption></figure>
+    </div>
+  </div>
+</div>
+<div class="gzs-zoom"><img src="" alt="收款码放大"></div>
+<script>
+(function(){
+  var z=document.querySelector('.gzs-zoom'),zi=z.querySelector('img');
+  document.querySelectorAll('.gzs-qr img').forEach(function(im){
+    im.addEventListener('click',function(e){e.stopPropagation();zi.src=im.src;z.classList.add('on');});
+  });
+  z.addEventListener('click',function(){z.classList.remove('on');zi.src='';});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'){z.classList.remove('on');zi.src='';}});
+})();
+</script>
 </body>
 </html>
